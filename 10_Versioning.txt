@@ -1,0 +1,20 @@
+For installing the particular package of particular version npm install@4.18.3 (Ex.)
+
+//version
+5.1.0
+
+1st Part -> 5
+2nd Part -> 1
+3rd Part -> 0
+
+3rd Part (Last Part) - Minor Fixes (Optional)
+Latest -> 5.1.2
+
+2nd Part - Recommended Bug Fix (Security Fix)
+Latest -> 5.2.0
+
+1st Part - Major Release / Breaking Update
+Latest6 -> 6.0.0
+
+~version -> "Approximately equivalent to version" -> Install all Minor Fixes Automatically. Ex. ~5.1.0
+^version -> "Compatible with version" -> Install all Recommended and Minor Fixes Automatically. ^5.1.0
