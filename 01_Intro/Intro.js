@@ -10,3 +10,5 @@
 // const math = require('./math')   // If inside require you give the module name directly without './' then it finds the package inside node, and if you mentioned any directory such as './' (current directory) then it finds in mentioned directory.
 
 //There are two types of js -> 1) module js,  2) common js
+
+//To remove or uninstall the installed package -> npm uninstall xyz(package name)
