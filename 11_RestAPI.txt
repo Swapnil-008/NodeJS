@@ -1,0 +1,11 @@
+A REST API (Representational State Transfer API) is a way of building web services that allows communication between a client (like a browser or mobile app) and a server over the HTTP protocol, following a set of architectural principles.
+
+*REST API (Representational State Transfer API):
+    -It is based on Client-Server Architecture – client and server are independent, communicating via HTTP.
+    -Response format can be in any type – JSON (most common), XML, HTML, or plain text.
+    -It respects HTTP methods and their semantics:
+        -GET → Retrieve data (should not modify resources).
+        -POST → Create a new resource.
+        -PUT → Update/replace an existing resource.
+        -PATCH → Partially update a resource.
+        -DELETE → Remove a resource.
