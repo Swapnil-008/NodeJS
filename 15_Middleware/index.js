@@ -6,23 +6,33 @@ const app = express()
 const PORT = 8000
 
 //Middleware - Plugin
+app.use(express.urlencoded({extended: false}));  //Parse the form data and pass the request forward (internally req.body = sent Data (like below used myUserName)
 
-app.use(express.urlencoded({extended: false}));
+app.use((req, res, next) => {
+    console.log("Hello from middleware 1")
+    // return res.end("Hey")                        //If we directly return without calling the next then it will not allow to execute the below code
+    req.myUserName = "Swapnil.dev"    //We have created a new property which would be accessible in below middlewares as well as routes also.
+    next();          //Denotes hadling the execution to the forward widdleware or routes
+})
 
-//Routes
-app.get('/users', (req, res) => {
-    const html = `
-    <ul>
-        ${users.map((user) => `<li> ${user.first_name}</li>`).join("")}
-    </ul>
-    `;
-    res.send(html)
+app.use((req, res, next) => {
+    console.log("Hello from middleware 2 ", req.myUserName)
+    // return res.end("Hey")    
+    next();         
+})
+
+//Middleware created for maintaing the log of requests, before moving forward it executes
+app.use((req, res, next) => {
+    const data = `${new Date().toLocaleString()}: ${req.method}: ${req.url}\n`
+    fs.appendFile('./log.txt', data, (err, data) => {                          
+        next()
+    })
 })
 
 //Rest API
-
 //Get all the users
 app.get('/api/users', (req, res) => {
+    console.log("Get all users ", req.myUserName)
     return res.json(users)
 })
 
@@ -66,12 +76,6 @@ app.patch('/api/users/:id', (req, res) => {
 app.delete('/api/users/:id', (req, res) => {
     const id = Number(req.params.id)
     const body = req.body
-    // const newUsers = users.map((user) => {   //But it lefts null at the place of removed user
-    //     if(user.id !== id)
-    //     {
-    //         return user;
-    //     }
-    // })
     const newUsers = users.filter((user) => user && user.id !== id)
     fs.writeFile('./MOCK_DATA.json', JSON.stringify(newUsers), (err) => {
         if (err)
@@ -82,20 +86,5 @@ app.delete('/api/users/:id', (req, res) => {
         return res.json({ status: "Success", id: id })
     })
 })
-
-//If we observe the above routes then we can see that get, patch, and delete route have same path, so as they have the same path we could group the routes
-// app
-// .route('/api/users/:id')
-// .get((req, res) => {
-//     const id = Number(req.params.id);
-//     const user = users.find((user) => user.id === id);
-//     return res.json(user)
-// })
-// .patch((req, res) => {
-//     return res.json({status: "pending"})
-// })
-// .delete((req, res) => {
-//     return res.json({status: "pending"})
-// })
 
 app.listen(PORT, () => console.log("Server Started!"))
