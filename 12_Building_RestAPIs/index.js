@@ -1,10 +1,15 @@
 const express = require('express')
-const users = require('./MOCK_DATA.json')
+let users = require('./MOCK_DATA.json')
+const fs = require('fs')
+
 const app = express()
 const PORT = 8000
 
-//Routes
+//Middleware - Plugin
 
+app.use(express.urlencoded({extended: false}));
+
+//Routes
 app.get('/users', (req, res) => {
     const html = `
     <ul>
@@ -25,22 +30,58 @@ app.get('/api/users', (req, res) => {
 app.get('/api/users/:id', (req, res) => {
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
+    if(user === undefined)
+    {
+        return res.json({status: "Not found"})
+    }
     return res.json(user)
 })
 
 //Create new user
 app.post('/api/users', (req, res) => {
-    return res.json({status: "pending"})
+    const body = req.body
+    console.log("Body: ", body.first_name)
+    users.push({...body, id: users.length + 1});
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+        return res.json({status: "Success", id: users.length})
+    })
 })
 
-//Update the existing user
+// Update the email of existing user
 app.patch('/api/users/:id', (req, res) => {
-    return res.json({status: "pending"})
+    const id = Number(req.params.id);
+    const body = req.body
+    const user = users.find((user) => user.id === id)
+    user.email = body.email
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(newUsers), (err) => {
+        if (err)
+        {
+            return res.status(500).json({ status: "Error", message: err })
+        }
+        users = newUsers;
+        return res.json({ status: "Success", id: id })
+    })
 })
 
 //Delete user
 app.delete('/api/users/:id', (req, res) => {
-    return res.json({status: "pending"})
+    const id = Number(req.params.id)
+    const body = req.body
+    // const newUsers = users.map((user) => {   //But it lefts null at the place of removed user
+    //     if(user.id !== id)
+    //     {
+    //         return user;
+    //     }
+    // })
+    const newUsers = users.filter((user) => user && user.id !== id)
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(newUsers), (err) => {
+        if (err)
+        {
+            return res.status(500).json({ status: "Error", message: err })
+        }
+        users = newUsers;
+        return res.json({ status: "Success", id: id })
+    })
 })
 
 //If we observe the above routes then we can see that get, patch, and delete route have same path, so as they have the same path we could group the routes
