@@ -12,3 +12,6 @@
 //There are two types of js -> 1) module js,  2) common js
 
 //To remove or uninstall the installed package -> npm uninstall xyz(package name)
+
+//MVC -> Model-View-Controller
+//Contoller manipulates the model and model updates the view.

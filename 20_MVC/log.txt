@@ -1,0 +1,9 @@
+4/10/2025, 10:53:14 pm: GET: /api/users
+4/10/2025, 10:56:15 pm: POST: /api/users
+4/10/2025, 10:56:22 pm: GET: /api/users
+4/10/2025, 10:56:41 pm: GET: /api/users/68e158b7bf6588d8b0f63470
+4/10/2025, 10:56:58 pm: PATCH: /api/users/68e158b7bf6588d8b0f63470
+4/10/2025, 10:57:03 pm: GET: /api/users
+4/10/2025, 10:57:18 pm: DELETE: /api/users/68e158b7bf6588d8b0f63470
+4/10/2025, 10:57:25 pm: GET: /api/users
+4/10/2025, 10:57:31 pm: GET: /api/users
