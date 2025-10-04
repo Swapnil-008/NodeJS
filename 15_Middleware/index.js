@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     next();         
 })
 
-//Middleware created for maintaing the log of requests, before moving forward it executes
+//Middleware created for maintaing the log of requests, before moving forward it execution
 app.use((req, res, next) => {
     const data = `${new Date().toLocaleString()}: ${req.method}: ${req.url}\n`
     fs.appendFile('./log.txt', data, (err, data) => {                          

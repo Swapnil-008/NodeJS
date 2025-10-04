@@ -2,3 +2,6 @@
 4/10/2025, 12:07:46 am: PATCH: /api/users/1000
 4/10/2025, 12:08:08 am: GET: /api/users/100
 4/10/2025, 12:08:13 am: GET: /api/users/15
+4/10/2025, 11:19:35 am: GET: /api/users
+4/10/2025, 11:20:12 am: POST: /api/users
+4/10/2025, 11:20:30 am: GET: /api/users
