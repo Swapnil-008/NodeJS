@@ -32,6 +32,8 @@ app.use((req, res, next) => {
 //Rest API
 //Get all the users
 app.get('/api/users', (req, res) => {
+    //Custom Header  //Always append X to custom header
+    res.setHeader('X-MyName', "Swapnil Shingne")  //It will add our own defined header to the response
     console.log("Get all users ", req.myUserName)
     return res.json(users)
 })
