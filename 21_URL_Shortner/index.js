@@ -26,9 +26,6 @@ app.set("view engine", "ejs")
 //Defining the path of EJS
 app.set('views', path.resolve('./views'))
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: false}))
-
 //Routes
 app.use('/url', urlRoute)
 
