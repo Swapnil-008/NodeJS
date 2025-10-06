@@ -1,13 +1,29 @@
-const sessionIdToUserMap = new Map()
+//StateFull
+// const sessionIdToUserMap = new Map()
+// function setUser(id, user)
+// {
+//     sessionIdToUserMap.set(id, user)
+// }
 
-function setUser(id, user)
+// function getUser(id)
+// {
+//     return sessionIdToUserMap.get(id)
+// }
+
+//stateLess
+const jwt = require('jsonwebtoken');
+const secret = "swapnil$@gmail@$";
+function setUser(user)
 {
-    sessionIdToUserMap.set(id, user)
+    return jwt.sign(user, secret)
 }
-
-function getUser(id)
+function getUser(token)
 {
-    return sessionIdToUserMap.get(id)
+    if (!token)
+    {
+        return null;
+    }
+    return jwt.verify(token, secret);
 }
 
 module.exports = {

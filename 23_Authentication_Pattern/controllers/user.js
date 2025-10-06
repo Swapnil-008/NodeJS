@@ -23,9 +23,17 @@ async function userLogin(req, res)
             error: 'Invalid username or password'
         });
     }
-    const sessionId = uuidv4();
-    setUser(sessionId, user);
-    res.cookie("uid", sessionId);
+    //StateFull
+    // const sessionId = uuidv4();
+    // setUser(sessionId, user);
+    // res.cookie("uid", sessionId);
+
+    //StateLess
+    const token = setUser({
+        _id: user._id,
+        email: user.email
+        });
+    res.cookie("uid", token, {httpOnly: true});
     return res.redirect("/");
 }
 
