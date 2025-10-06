@@ -17,6 +17,7 @@ Authentication Patterns -  Statefull and Stateless
 ❌ Cons:
     -Server must store sessions, so it's harder to scale (needs sticky sessions or shared session store like Redis)
     -More memory usage per user
+    -On restart the server the stored cookies are still there, but unable to login the user
 
 ✅ Example:
 You → login → server saves session → gives cookie → you send cookie → server uses session to identify you
