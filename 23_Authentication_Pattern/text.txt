@@ -1,1 +1,45 @@
 Authentication Patterns -  Statefull and Stateless
+
+1. Stateful Authentication
+    -Server remembers the user by storing session data.
+
+🔁 How it works:
+    -After login, server creates a session (unique ID) and stores it in server memory or DB.
+    -This session ID is sent to the client (usually in a cookie).
+    -On each request, client sends the cookie back.
+    -Server looks up session ID → finds user.
+
+✅ Pros:
+    -Easy to implement
+    -Server can invalidate sessions (e.g. on logout)
+    -Good for sensitive apps (e.g. admin panels)
+
+❌ Cons:
+    -Server must store sessions, so it's harder to scale (needs sticky sessions or shared session store like Redis)
+    -More memory usage per user
+
+✅ Example:
+You → login → server saves session → gives cookie → you send cookie → server uses session to identify you
+
+
+2. Stateless Authentication (JWT)
+    -Server does not remember anything. All info is in the token itself.
+
+🔁 How it works:
+    -After login, server generates a JWT (contains user data).
+    -Client stores it (cookie or localStorage).
+    -On each request, token is sent (usually via Authorization header or cookie).
+    -Server verifies the token and gets user info.
+
+✅ Pros:
+    -Scalable: No server memory/storage needed
+    -Works well in microservices
+    -Can add expiry, roles, etc. in token
+
+❌ Cons:
+    -You can't revoke a token (unless you build a blacklist)
+    -If token is stolen, attacker stays logged in until it expires
+    -Bigger payload per request
+
+✅ Example:
+You → login → server gives JWT → you send JWT → server verifies JWT and gets user info
