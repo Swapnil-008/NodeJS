@@ -1,3 +1,3 @@
-const math = require('./math')
+const {add, sub} = require('./math')
 
-console.log(`Add: ${math.add(10, 15)}, Sub: ${math.sub(25, 10)}`)
+console.log(`Add: ${add(10, 15)}, Sub: ${sub(25, 10)}`)
