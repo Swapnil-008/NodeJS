@@ -1,11 +1,22 @@
 // How the node js works?
 
-//Step1: Client/user sends the request.
-//Step2: That request enques into Event Queue.
-//Step3: Event Loop starts to perform the requests one by one from Event Queue.
-//Step4: Event Loop checks whether the request is blocking or non-blocking.
-//Step5: If it is non-blocking request then simply performs the operation and return the result.
-//Step6: If it is blocking request, then it checks the Thread Pool, whether any thread is available to perform the operation or not, and if the request is not available then it waits in free of thread, and then performs the operation and return the result. 
+// Step 1: Client/User sends a request to the Node.js server.
+// Step 2: The request reaches the Event Loop (NOT directly enqueued into the Event Queue).
+// Step 3: The Event Loop inspects the type of operation requested.
+// Step 4: If the operation is NON-BLOCKING I/O (e.g., network request, async file read):
+//         → Node delegates the operation to the OS Kernel.
+//         → OS performs the task in background.
+//         → When completed, the callback is placed into the Event Queue.
+// Step 5: If the operation requires THREAD POOL (e.g., crypto, compression, DNS lookup, async fs):
+//         → The Event Loop sends the task to Thread Pool.
+//         → Threads perform the heavy work.
+//         → When finished, the callback is placed into the Event Queue.
+// Step 6: If the operation is SYNCHRONOUS (blocking JavaScript code):
+//         → It executes immediately on the main thread.
+//         → This blocks the Event Loop until it completes.
+// Step 7: The Event Loop continuously checks the Event Queue:
+//         → When the call stack is empty, it pushes the next callback from the queue and executes it.
+// Step 8: The result is returned back to the client.
 
 // Default Thread Pool size = 4.
 // Max = No. of CPUs.
