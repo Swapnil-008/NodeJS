@@ -1,12 +1,16 @@
 const http = require('http')
 const { listenerCount } = require('process')
 const fs = require('fs')
-const url = require('url')
+const url = require('url') // install the url package to access the properties which url provides
 
-fs.writeFileSync('./text.txt', "New File Created\n")
+// fs.writeFileSync('./text.txt', "New File Created\n")
 
 const myServer = http.createServer((req, res) => {
     // console.log(req.headers)
+    if(req.url == "/favicon.ico")
+    {
+        return;
+    }
     // if(req.url !== "/favicon.ico")  // To aviod the double visit
     // {
     //     fs.appendFile('./07_Building_HTTP_Server/text.txt', "New Request Added!\n", (err, data) => {
@@ -14,9 +18,10 @@ const myServer = http.createServer((req, res) => {
     // })
     // }
     const content = `New Request Added!, Time: ${new Date().toLocaleString()}, ${req.url} \n`;
-    const myUrl = url.parse(req.url, true) // This true allows to create a object and seprate all the query parameters to that query
+
+    const myUrl = url.parse(req.url, true) // This true allows to create a object and seprate all the query parameters of that query
     // Ex path = path: '/about?myname=swapnil&id=43178&year=4',
-    // In myUrl there is property query = query: [Object: null prototype] {
+    // In myUrl there is property query: [Object: null prototype] {
     //     myname: 'swapnil',
     //     id: '43178',
     //     year: '4'
@@ -29,7 +34,7 @@ const myServer = http.createServer((req, res) => {
         }
         else if(myUrl.pathname === '/about')
         {
-            res.end(`Hey, ${myUrl.query.myname}`)
+            res.end(`Hey, ${myUrl.query.username}`)
         }
         else{
             res.end("Welcome to Favicon!")
