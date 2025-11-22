@@ -12,7 +12,7 @@ app.use((req, res, next) => {
     console.log("Hello from middleware 1")
     // return res.end("Hey")                        //If we directly return without calling the next then it will not allow to execute the below code
     req.myUserName = "Swapnil.dev"    //We have created a new property which would be accessible in below middlewares as well as routes also.
-    next();          //Denotes hadling the execution to the forward widdleware or routes
+    next();          //Denotes hadling the execution to the forward widdlewares or routes
 })
 
 app.use((req, res, next) => {
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 //Middleware created for maintaing the log of requests, before moving forward it execution
 app.use((req, res, next) => {
-    const data = `${new Date().toLocaleString()}: ${req.method}: ${req.url}\n`
+    const data = `Hey ${req.myUserName}, New Request Added, ${new Date().toLocaleString()}: ${req.method}: ${req.url}\n`
     fs.appendFile('./log.txt', data, (err, data) => {                          
         next()
     })
