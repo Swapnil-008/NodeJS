@@ -1,8 +1,11 @@
 REST API - JSON
-
+mockaroo.com for generating the fake data
 GET /users - HTML Document Render
 GET /api/users - List all users
 GET /api/users/1 - Get the user with ID 1
+
+Dynamic path parameter:
+/api/users/:id
 
 POST /api/users - Create new user
 PATCH /api/user/1 - Edit the user with ID 1

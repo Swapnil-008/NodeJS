@@ -2,70 +2,62 @@ const express = require('express')
 let users = require('./MOCK_DATA.json')
 const fs = require('fs')
 
-const app = express()
-const PORT = 8000
+const app = express();
+const PORT = 8000;
 
-//Middleware - Plugin
+app.use(express.urlencoded({extended: false})); //Used to parse the form data
 
-app.use(express.urlencoded({extended: false}));
-
-//Routes
-app.get('/users', (req, res) => {
-    const html = `
-    <ul>
-        ${users.map((user) => `<li> ${user.first_name}</li>`).join("")}
-    </ul>
-    `;
-    res.send(html)
-})
-
-//Rest API
-
-//Get all the users
 app.get('/api/users', (req, res) => {
     return res.json(users)
 })
 
 //Get the user with specific ID
 app.get('/api/users/:id', (req, res) => {
-    const id = Number(req.params.id);
+    const id = Number(req.params.id);    //params.id -> string
     const user = users.find((user) => user.id === id);
     if(user === undefined)
     {
-        return res.json({status: "Not found"})
+        return res.status(404).json({status: "User not found"})
     }
-    return res.json(user)
+    return res.status(200).json(user);
 })
 
 //Create new user
 app.post('/api/users', (req, res) => {
     const body = req.body
     console.log("Body: ", body.first_name)
-    users.push({...body, id: users.length + 1});
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        return res.json({status: "Success", id: users.length})
+    users.push({...body, id: users.length + 1})
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+        if(err)
+        {
+            return res.status(400).json({status: "failed"})
+        }
+        return res.status(201).json({status: "Success", id: users.length})
     })
 })
 
 // Update the email of existing user
 app.patch('/api/users/:id', (req, res) => {
     const id = Number(req.params.id);
-    const body = req.body
+    const newEmail = req.body.email;
     const user = users.find((user) => user.id === id)
-    user.email = body.email
+    if(user === undefined)
+    {
+        return res.status(404).json({status: "failed", message: "No User found"})
+    }
+    user.email = newEmail
     fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-        if (err)
+        if(err)
         {
-            return res.status(500).json({ status: "Error", message: err })
+            return res.status(500).json({status: "Failed"})
         }
-        return res.json({ status: "Success", id: id })
+        return res.status(200).json({status: "Success", id: id})
     })
 })
 
 //Delete user
 app.delete('/api/users/:id', (req, res) => {
     const id = Number(req.params.id)
-    const body = req.body
     // const newUsers = users.map((user) => {   //But it lefts null at the place of removed user
     //     if(user.id !== id)
     //     {
@@ -74,12 +66,12 @@ app.delete('/api/users/:id', (req, res) => {
     // })
     const newUsers = users.filter((user) => user && user.id !== id)
     fs.writeFile('./MOCK_DATA.json', JSON.stringify(newUsers), (err) => {
-        if (err)
+        if(err)
         {
-            return res.status(500).json({ status: "Error", message: err })
+            return res.status(404).json({message: "User not found"})
         }
-        users = newUsers;
-        return res.json({ status: "Success", id: id })
+        users = newUsers
+        return res.status(200).json({status: "Succes", message: "Successfully user deleted!"})
     })
 })
 
@@ -98,4 +90,6 @@ app.delete('/api/users/:id', (req, res) => {
 //     return res.json({status: "pending"})
 // })
 
-app.listen(PORT, () => console.log("Server Started!"))
+app.listen(PORT, ()=>{
+    console.log("Server started!")
+})
